@@ -33,14 +33,15 @@ cap.set(3,1080) # width
 cap.set(4,480) # height
 detector=HandDetector(detectionCon=0.7, maxHands=1)
 
-buttonValues=[['7','8','9','*'],
+buttonValues=[['(',')','E','C'],
+              ['7','8','9','*'],
               ['4','5','6','+'],
               ['1','2','3','-'],
               ['0','.','=','/'],]
 
 buttonnList=[]
 for i in range(4):
-    for j in range(4):
+    for j in range(5):
         xpos=i*100 + 500
         ypos=j*100 + 190
         buttonnList.append(Button((xpos,ypos),80,80,buttonValues[j][i]))
@@ -80,9 +81,15 @@ while True:
             if length<50:
                 for i, button in enumerate(buttonnList):
                     if button.checkClick(x,y) and delayCounter==0:
-                        myValues=buttonValues[int(i%4)][i//4]
+                        myValues=buttonValues[int(i%5)][int(i/5)]
+                        print(i,"->",myValues)
                         if myValues== "=":
                             myEquation=str(eval(myEquation))
+                        elif myValues=="E":
+                            myEquation=myEquation[:-1] if myEquation else myEquation
+                            # print(myEquation)
+                        elif myValues=="C":
+                            myEquation=""
                         else:
                             myEquation+=myValues
                         delayCounter=1
