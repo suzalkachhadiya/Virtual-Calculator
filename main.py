@@ -46,7 +46,8 @@ for i in range(4):
         buttonnList.append(Button((xpos,ypos),80,80,buttonValues[j][i]))
 
 #varables
-myEquation="29*29"
+myEquation=""
+delayCounter=0
 
 while True:
     try:
@@ -78,9 +79,19 @@ while True:
             x,y=lmlist[8][:2]
             if length<50:
                 for i, button in enumerate(buttonnList):
-                    if button.checkClick(x,y):
-                        print(buttonValues[int(i%4)][i//4])
-
+                    if button.checkClick(x,y) and delayCounter==0:
+                        myValues=buttonValues[int(i%4)][i//4]
+                        if myValues== "=":
+                            myEquation=str(eval(myEquation))
+                        else:
+                            myEquation+=myValues
+                        delayCounter=1
+        
+        # Avoid Duplicates
+        if delayCounter!=0:
+            delayCounter+=1
+            if delayCounter>10:
+                delayCounter=0
 
         # Display the result / equation
         cv2.putText(img,myEquation,(510,120),cv2.FONT_HERSHEY_PLAIN,
